@@ -1,0 +1,95 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Product;
+use App\Models\Section;
+use Illuminate\Http\Request;
+
+class ProductController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $products = Product::all();
+        $sections = Section::all();
+        return view('products.products',compact('products','sections'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'name' => 'required|unique:sections|max:255',
+        ], [
+            'name.required' => 'يرجي إدخال اسم المنتج',
+            'name.unique' => 'اسم المنتج مسجل مسبقاً',
+        ]);
+
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'section_id' => $request->section,
+        ]);
+
+        session()->flash('Add', 'تم إضافة المنتج بنجاح ');
+        return redirect('/products');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Product $product)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Product $product)
+    {
+
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+
+        $product->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'section_id' => Section::where('name', $request->section)->first()->id,
+        ]);
+
+        session()->flash('edit', 'تم تعديل المنتج بنجاح');
+        return back();
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Request $request)
+    {
+        $product = Product::findOrFail($request->id);
+        $product->delete();
+        session()->flash('delete', 'تم حذف المنتج بنجاح');
+        return back();
+    }
+}
