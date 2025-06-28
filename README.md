@@ -50,9 +50,9 @@ This is a web-based Invoice Management System developed using Laravel. It allows
 8. Access the application at http://localhost:8000
 
 ## Usage
-Register a new user or login with existing credentials
-Navigate through clients, products, and invoices sections using the menu
-Perform create, update, and delete operations as needed
+- Register a new user or login with existing credentials
+- Navigate through clients, products, and invoices sections using the menu
+- Perform create, update, and delete operations as needed
 
 ## Contribution
 Feel free to fork the project and submit pull requests for improvements.
